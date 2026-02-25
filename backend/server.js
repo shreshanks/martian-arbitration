@@ -13,37 +13,53 @@ app.post('/evaluate', (req, res) => {
     // Mock validation or logging could happen here
     console.log("Received proposal for review:", proposal);
 
-    // Mocked responses representing the three departments
+    // Mocked responses representing the three departments (matching Canonical JSON Schema)
     const defaultResponse = {
         departments: {
             mlua: {
-                name: "Martian Land Use Authority",
-                verdict: "APPROVED",
-                notes: "Zone classification suitable for proposed development."
+                department: "Martian Land Use Authority",
+                verdict: "APPROVE",
+                confidence: 0.95,
+                risk_score: 0.1,
+                matched_cases: 42,
+                justification: "Zone classification suitable for proposed development.",
+                trace: ["case_id: MZ-001", "case_id: MZ-042"]
             },
             das: {
-                name: "Department of Atmospheric Stability",
-                verdict: proposal.terraformingImpact ? "REJECTED" : "APPROVED",
-                notes: proposal.terraformingImpact
+                department: "Department of Atmospheric Stability",
+                verdict: proposal.terraformingImpact ? "REJECT" : "APPROVE",
+                confidence: 0.88,
+                risk_score: proposal.terraformingImpact ? 0.9 : 0.2,
+                matched_cases: 15,
+                justification: proposal.terraformingImpact
                     ? "Unsanctioned terraforming impact detected. Hazard level high."
-                    : "Emissions within stable parameters."
+                    : "Emissions within stable parameters.",
+                trace: ["case_id: ATRO-88"]
             },
             bra: {
-                name: "Bureau of Resource Allocation",
-                verdict: (proposal.waterUsage > 80 || proposal.energyConsumption > 80) ? "FLAGGED" : "APPROVED",
-                notes: "Resource drain evaluated based on current grid capacity."
+                department: "Bureau of Resource Allocation",
+                verdict: (proposal.waterUsage > 80 || proposal.energyConsumption > 80) ? "CONDITIONAL" : "APPROVE",
+                confidence: 0.92,
+                risk_score: (proposal.waterUsage > 80 || proposal.energyConsumption > 80) ? 0.6 : 0.15,
+                matched_cases: 8,
+                justification: "Resource drain evaluated based on current grid capacity.",
+                trace: ["case_id: RES-919"]
             }
         }
     };
 
-    // Determine final decision based on the three departments
-    let finalDecision = "APPROVED";
+    // Determine final decision based on the three departments deterministic rules
     const verdicts = Object.values(defaultResponse.departments).map(d => d.verdict);
+    const rejectCount = verdicts.filter(v => v === "REJECT").length;
+    const approveCount = verdicts.filter(v => v === "APPROVE").length;
 
-    if (verdicts.includes("REJECTED")) {
-        finalDecision = "DENIED";
-    } else if (verdicts.includes("FLAGGED")) {
-        finalDecision = "REQUIRES REVISION";
+    let finalDecision;
+    if (rejectCount >= 2) {
+        finalDecision = "REJECT";
+    } else if (approveCount === 3) {
+        finalDecision = "APPROVE";
+    } else {
+        finalDecision = "CONDITIONAL";
     }
 
     defaultResponse.finalDecision = finalDecision;
