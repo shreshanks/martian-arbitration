@@ -1,7 +1,7 @@
 // evaluate.js
 const express = require('express');
 const router = express.Router();
-const { evaluateMLUA, evaluateDAS, evaluateBRA } = require('./departments');
+const { evaluateMLUA, evaluateDAS, evaluateBRA } = require('./department');
 
 // Basic schema validator (lightweight)
 function validateProposal(body) {

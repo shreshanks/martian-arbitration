@@ -240,6 +240,37 @@ function App() {
                             {results.finalDecision}
                         </div>
                     </div>
+                    <div className="final-decision">
+                        <h3>Final Bureaucratic Status:</h3>
+                        <div className={`huge-badge ${results.finalDecision.toLowerCase()}`}>
+                            {results.finalDecision}
+                        </div>
+                    </div>
+
+                    {/* 👇 PASTE HERE */}
+
+                    {results.workflowAction && (
+                        <div style={{ marginTop: 20, padding: 15, background: '#0E1313', border: '1px solid var(--accent-teal)' }}>
+                            <h4>Action Taken</h4>
+                            <p>{results.workflowAction.message}</p>
+                        </div>
+                    )}
+
+                    {results.executionTrace && (
+                        <div style={{ marginTop: 20, padding: 15, background: '#0d0d0d', border: '1px solid #222' }}>
+                            <h4>Execution Trace</h4>
+                            {results.executionTrace.map((s, idx) => (
+                                <div key={idx} style={{ marginBottom: 8, fontFamily: 'monospace' }}>
+                                    <strong>[{s.step}]</strong> {s.actor} → <em>{s.tool}</em>
+                                    <div style={{ color: 'var(--accent-orange)', fontSize: 13 }}>
+                                        {s.detail}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+
 
                     <button
                         className="reset-btn"
