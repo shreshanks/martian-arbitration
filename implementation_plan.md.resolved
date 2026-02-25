@@ -1,0 +1,31 @@
+# Goal Description
+Create a minimal full-stack web application for the "Martian Arbitration" project. It includes a React frontend using Vite and an Express.js backend. The app simulates an evaluation process for development proposals by three Martian bureaucratic departments with a specific "retro-futuristic sterile government beige" theme.
+
+## Proposed Changes
+
+### Backend Setup
+Initialize a Node.js project in `e:/Martian abitration/backend`.
+Dependencies: `express`, `cors`.
+#### [NEW] [server.js](file:///e:/Martian abitration/backend/server.js)
+Create a `POST /evaluate` endpoint that receives the form data and returns mocked JSON results for:
+- Martian Land Use Authority
+- Department of Atmospheric Stability
+- Bureau of Resource Allocation
+- Final Decision
+
+### Frontend Setup
+Initialize a React project in `e:/Martian abitration/frontend` using Vite.
+Dependencies: standard React app.
+#### [NEW] [App.jsx](file:///e:/Martian abitration/frontend/src/App.jsx)
+Build a form component for Sector, Development Type, Water Usage, Energy Consumption, Population Impact, and Terraforming Impact. Handle the staged 1-second delay for each department before showing the mocked verdict.
+#### [NEW] [index.css](file:///e:/Martian abitration/frontend/src/index.css)
+Apply CSS styling to match the sterile government beige and retro-futuristic theme. Use custom CSS and avoid heavy frameworks.
+
+## Verification Plan
+
+### Manual Verification
+1. Run backend using `node server.js` from `e:/Martian abitration/backend`.
+2. Run frontend using `npm run dev` from `e:/Martian abitration/frontend`.
+3. Open the local dev server URL in a browser.
+4. Fill out the form fields and click "Submit to Interplanetary Bureaucracy".
+5. Verify the staged loading sequence (1 second per department) and the final JSON-like output.
